@@ -14,11 +14,23 @@ public class FrameDiskon extends javax.swing.JFrame {
      */
     public FrameDiskon() {
         initComponents();
+        
+        txtRiwayat.setEditable(false);     // Tidak bisa diketik/diedit
+        txtRiwayat.setFocusable(false);    // Tidak bisa diklik / tidak bisa dapat fokus
+
+        txtHargaAkhir.setEditable(false);     // Tidak bisa diketik/diedit
+        txtHargaAkhir.setFocusable(false);
+        
         cmbDiskon.addItem("5%");
         cmbDiskon.addItem("10%");
         cmbDiskon.addItem("15%");
         cmbDiskon.addItem("20%");
         cmbDiskon.addItem("25%");
+        cmbDiskon.addItem("30%");
+        cmbDiskon.addItem("35%");
+        cmbDiskon.addItem("40%");
+        cmbDiskon.addItem("45%");
+        cmbDiskon.addItem("50%");
 
         // Atur nilai awal slider (0–50%)
         sldDiskon.setMinimum(0);
@@ -26,6 +38,34 @@ public class FrameDiskon extends javax.swing.JFrame {
         sldDiskon.setMajorTickSpacing(10);
         sldDiskon.setPaintTicks(true);
         sldDiskon.setPaintLabels(true);
+        
+        cmbDiskon.addActionListener(e -> {
+            int selectedDiskon = Integer.parseInt(cmbDiskon.getSelectedItem().toString().replace("%", ""));
+            sldDiskon.setValue(selectedDiskon);
+        });
+        
+        // Set tampilan awal label sesuai posisi slider
+        lblNilaiSlider.setText(sldDiskon.getValue() + "%");
+
+        // Sinkronisasi Slider -> ComboBox
+        // Event listener saat slider digeser
+        sldDiskon.addChangeListener(e -> {
+            int nilai = sldDiskon.getValue();
+            lblNilaiSlider.setText(nilai + "%"); // ubah label sesuai nilai slider
+
+            // Sinkronkan combo box ke slider jika nilainya cocok
+            for (int i = 0; i < cmbDiskon.getItemCount(); i++) {
+                int valCombo = Integer.parseInt(cmbDiskon.getItemAt(i).replace("%", ""));
+                if (valCombo == nilai) {
+                    cmbDiskon.setSelectedIndex(i);
+                    break;
+                }
+            }
+        });
+
+        
+        
+
     }
 
     /**
@@ -114,6 +154,9 @@ public class FrameDiskon extends javax.swing.JFrame {
 
         sldDiskon.setMajorTickSpacing(10);
         sldDiskon.setMaximum(50);
+        sldDiskon.setMaximumSize(new java.awt.Dimension(200, 30));
+        sldDiskon.setMinimumSize(new java.awt.Dimension(200, 30));
+        sldDiskon.setPreferredSize(new java.awt.Dimension(200, 30));
         sldDiskon.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sldDiskonStateChanged(evt);
@@ -132,7 +175,7 @@ public class FrameDiskon extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(69, 69, 69)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -143,25 +186,23 @@ public class FrameDiskon extends javax.swing.JFrame {
                             .addComponent(txtHargaAsli, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jlabel)
-                                    .addComponent(jLabel6))
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnHitung, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(sldDiskon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtKupon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtHargaAkhir, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblNilaiSlider)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jlabel)
+                            .addComponent(jLabel6))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnHitung, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(sldDiskon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtKupon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtHargaAkhir, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNilaiSlider))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(57, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -254,7 +295,7 @@ public class FrameDiskon extends javax.swing.JFrame {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void sldDiskonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldDiskonStateChanged
-        jlabel.setText(sldDiskon.getValue() + "%");
+//        jlabel.setText(sldDiskon.getValue() + "%");
     }//GEN-LAST:event_sldDiskonStateChanged
 
     /**
